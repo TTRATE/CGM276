@@ -5,7 +5,7 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'pannawat',
-    database: 'app'
+    database: 'app1'
 
 });
 
@@ -18,21 +18,25 @@ connection.connect(function (err) {
 
 });
 
-app.get('/users', function (req, res) {
+/*app.get('/users', function (req, res) {
     //res.end('Noob');
     queryAllUser(function(err,resualt){
         res.end(resualt);
     });
-});
+});*/
 
 
 app.get('/user/:name', function (req, res) {
 
     var name = req.params.name;
+
+
     console.log(name);
-  /*  queryUser(function(err,resualt){
+    queryUser(name)(function(err,resualt){
+   
         res.end(resualt);
-    });*/
+       
+    });
 });
 
 
@@ -41,7 +45,7 @@ var server = app.listen(8081, function () {
 
 })
 
-function queryAllUser(callback) {
+/*function queryAllUser(callback) {
     var json = '';
     connection.query('SELECT * FROM user', function (err, rows, fields) {
         if (err) throw err;
@@ -50,15 +54,18 @@ function queryAllUser(callback) {
 
         callback(null,json);
     });
-}
+}*/
 
 function queryUser(callback) {
     var json = '';
-    connection.query("SELECT * FROM user WHERE Name = 'Tim'", function (err, rows, fields) {
+    connection.query("SELECT * FROM user WHERE name = ? ", function (err, rows, fields) {
+        
+        console.log("Connection : "+ callback);
         if (err) throw err;
-
         json = JSON.stringify(rows);
 
         callback(null,json);
+ 
+ 
     });
 }
